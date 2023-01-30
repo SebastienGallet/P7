@@ -1,0 +1,102 @@
+<div class="filter">
+    <button class="filter-button" id="ustensils-filter-button">Appareils <img src="./assets/arrow.svg" alt="arrow"></button>
+    <div class="dropdown" id="ustensils-dropdown">
+        <div class="searchbarblock">
+            <input type="text" class="searchbar-filter" id="searchbar-ustensils" placeholder="Rechercher un appareil">
+            <img src="./assets/arrow.svg" alt="fleche" id="arrow-ustensils" class="searchbar-arrow">
+        </div>
+        <ul class="dropdown-content" id="ustensils-dropdown-content"></ul>
+    </div>
+</div>
+
+<script>
+import { getdata } from "../api/api.js";
+import cardsFactory from "../factory/cards.js";
+
+let recipes;
+
+async function displayData(data) {
+    const recipesSection = document.querySelector('.cards')
+    recipesSection.innerHTML = '';
+    data.forEach((recipe) => {
+        const recipeModel = cardsFactory(recipe)
+        const recipeCardDOM = recipeModel.getCardDOM()
+        const article = document.createElement('article')
+        article.className = 'card'
+        article.innerHTML = recipeCardDOM
+        recipesSection.appendChild(article)
+    });
+
+}
+
+document.querySelector("#searchbar").addEventListener("input", function() {
+    let searchTerm = document.querySelector("#searchbar").value.toLowerCase();
+    let searchResults = recipes.filter(recipe => recipe.name.toLowerCase().includes(searchTerm) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchTerm)) || recipe.description.toLowerCase().includes(searchTerm));
+    displayData(searchResults);
+});
+
+
+class UstensilsFilter {
+    constructor() {
+        this.allUstensils = new Set();
+        this.recipes = [];
+        this.showDropdown();
+        this.hideDropdown()
+    }
+
+    async init() {
+        this.recipes = await getdata();
+        this.recipes.forEach(recipe => recipe.ustensils.forEach(ustensil => this.allUstensils.add(ustensil)));
+        this.displayUstensils();
+    }
+
+    displayUstensils() {
+        const ustensilsList = document.querySelector("#ustensils-dropdown-content");
+        ustensilsList.innerHTML = "";
+        this.allUstensils.forEach(ustensil => {
+            const li = document.createElement("li");
+            li.innerHTML = ustensil;
+            li.addEventListener("click", () => this.filterByUstensil(ustensil));
+            ustensilsList.appendChild(li);
+        });
+    }
+
+    filterByUstensil(ustensil) {
+        let searchResults = this.recipes.filter(recipe => recipe.ustensils.some(u => u === ustensil));
+        displayData(searchResults);
+    }
+
+    showDropdown() {
+        document.querySelector("#ustensils-filter-button").addEventListener("click", function() {
+            document.querySelector("#ustensils-dropdown").style.display = 'block';
+            document.querySelector("#ustensils-filter-button").style.display = 'none';
+        });
+    }
+    
+    hideDropdown() {
+        document.querySelector("#arrow-ustensils").addEventListener("click", function() {
+            document.querySelector("#ustensils-filter-button").style.display = 'block';
+            document.querySelector("#ustensils-dropdown").style.display = 'none';
+        });
+    }
+
+    searchFilter() {
+        document.querySelector("#searchbar-ustensils").addEventListener("input", () => {
+            let searchTerm = document.querySelector("#searchbar-ustensils").value.toLowerCase();
+            let searchResults = this.recipes.filter(recipe => recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(searchTerm)));
+            this.filterByUstensil(searchResults);
+        });
+    }
+
+}
+
+const ustensilsFilter = new UstensilsFilter();
+ustensilsFilter.init();
+
+
+async function init () {
+    recipes = await getdata();
+    displayData(recipes);
+};
+init();
+</script>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Les petits plats</title>
+</head>
+<body>
+    <header>
+        <img src="./assets/logo.webp" alt="Logo">
+    </header>
+
+    <main>
+        <div class="search">
+            <input type="text" id="searchbar" placeholder="Rechercher une recette">
+            <img src="./assets/loupe.svg" alt="Loupe" class="search-icon">
+        </div>
+
+        <div class="tags"></div>
+
+        <div class="filter">
+            <button class="filter-button" id="ustensils-filter-button">Appareils <img src="./assets/arrow.svg" alt="arrow"></button>
+            <div class="dropdown" id="ustensils-dropdown">
+                <div class="searchbarblock">
+                    <input type="text" class="searchbar-filter" id="searchbar-ustensils" placeholder="Rechercher un appareil">
+                    <img src="./assets/arrow.svg" alt="fleche" id="arrow-ustensils" class="searchbar-arrow">
+                </div>
+                <ul class="dropdown-content" id="ustensils-dropdown-content"></ul>
+            </div>
+        </div>
+        
+
+        <section class="cards"></section>
+    </main>
+    <script src="./scripts/pages/searchpage.js" type="module"></script>
+    <script src="./scripts/class/filterByUstensil.js" type="module"></script>
+</body>
+</html>
