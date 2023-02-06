@@ -4,6 +4,7 @@ import { displayData } from "../pages/searchpage.js";
 class UstensilsFilter {
     constructor() {
         this.allUstensils = new Set();
+        this.selectedUstensils = [];
         this.showDropdown();
         this.hideDropdown();
         this.searchFilter();
@@ -28,7 +29,8 @@ class UstensilsFilter {
     }
 
     filterByUstensil(ustensil) {
-        let searchResults = this.filterRecipes(this.recipes, [ustensil]);
+        this.selectedUstensils.push(ustensil);
+        let searchResults = this.filterRecipes(this.recipes, this.selectedUstensils);
         this.filterUstensilsByResults(searchResults);
         this.addTag(ustensil);
         displayData(searchResults);
@@ -36,14 +38,15 @@ class UstensilsFilter {
 
     filterRecipes(recipes, selectedUstensils) {
         return recipes.filter(recipe => {
-            return recipe.ustensils.some(ustensil => {
-                return selectedUstensils.map(s => s.toLowerCase()).includes(ustensil.toLowerCase());
+            return selectedUstensils.every(ustensil => {
+                return recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil.toLowerCase());
             });
         });
     }
 
     filterUstensilsByResults(data) {
         let searchResults = data;
+        // set() pour eviter les doublons
         let filteredUstensils = new Set();
         searchResults.forEach(recipe => recipe.ustensils.forEach(ustensil => filteredUstensils.add(ustensil)));
         this.allUstensils = filteredUstensils;
@@ -98,8 +101,8 @@ class UstensilsFilter {
     
 
     resetResults() {
-        this.filterUstensilsByResults(this.recipes)
-        this.displayUstensils()
+        this.selectedUstensils = [];
+        this.filterUstensilsByResults(this.recipes);
         displayData(this.recipes);
     }
 
