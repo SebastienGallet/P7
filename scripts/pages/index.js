@@ -5,10 +5,23 @@ import UstensilsFilter from "../class/filterByUstensil.js";
 const recipes = await getdata();
 displayData(recipes)
 
+
 const ustensilsFilter = new UstensilsFilter(recipes);
 const filteredUstensil = ustensilsFilter.collect(recipes);
 ustensilsFilter.display(filteredUstensil);
 ustensilsFilter.listenForSelection(filteredUstensil);
+
+
+
+
+const items = document.querySelectorAll('.item');
+items.forEach(item => {
+    item.addEventListener('click', function() {
+        const filteredList = ustensilsFilter.filter();
+        displayData(filteredList);
+    });
+});
+
 
 document.querySelector("#searchbar").addEventListener("input", function() {
     let searchTerm = document.querySelector("#searchbar").value.toLowerCase();
@@ -19,7 +32,7 @@ document.querySelector("#searchbar").addEventListener("input", function() {
     }
 });
 
-export async function displayData(data) {
+async function displayData(data) {
     const recipesSection = document.querySelector('.cards')
     recipesSection.innerHTML = '';
     data.forEach((recipe) => {
@@ -29,6 +42,8 @@ export async function displayData(data) {
         article.className = 'card'
         article.innerHTML = recipeCardDOM
         recipesSection.appendChild(article)
+        // const ustensilsFilter = new UstensilsFilter(recipes);
+        // ustensilsFilter.filterDropdown(data)
     });
 
 }
