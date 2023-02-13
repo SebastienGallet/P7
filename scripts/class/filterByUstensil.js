@@ -1,29 +1,24 @@
 class UstensilsFilter {
-    constructor(recipes) {
-      this.recipes = recipes;
+    constructor(list) {
+      this.list = list;
       this.all = new Set();
       this.selected = new Set();
-      this.showDropdown();
-      this.hideDropdown();
-      this.searchFilter();
     }
   
     // Récupération de la liste des ustensils.
     collect() {
-      this.recipes.forEach(recipe => {
+      this.list.all.forEach(recipe => {
         recipe.ustensils.forEach(ustensil => {
           this.all.add(ustensil.charAt(0).toUpperCase() + ustensil.slice(1));
         });
       });
-      return this.all;
-      
     }
 
     // Création des "li" pour les ustensils.
-    display(list) {
+    display() {
         const ustensilsList = document.querySelector("#ustensils-dropdown-content");
         ustensilsList.innerHTML = "";
-        list.forEach(ustensil => {
+        this.all.forEach(ustensil => {
             const li = document.createElement("li");
             li.innerHTML = ustensil;
             ustensilsList.appendChild(li);
@@ -33,38 +28,44 @@ class UstensilsFilter {
 
     // Convertir les li en minuscules pour le stocker dans tag
     listenForSelection() {
-        document.querySelectorAll('.item').forEach(li =>
+        document.querySelectorAll('#ustensils-dropdown .item').forEach(li =>
         {
             li.addEventListener("click", (e) => 
             {
                 const tag = e.target.innerText.toLowerCase();
-                // Si le tag n'est pas déjà séléctionné, ajout du tag dans la liste des ustensils.
-                if (!this.selected.has(tag)) {
-                  this.addToSelection(tag)
-                }
+
+                this.selected.add(tag)
+                this.displaySelection(tag)
                 // Filtrage des recettes avec le nouveau tag
-                this.filter()
+                const filteredRecipes = this.filter(this.list.all);
+                this.list.display(filteredRecipes)
+                this.listerForUnselect(tag)
             })
         })
     }
-    
-    //Ajout du tag recu depuis listenForSelection
-    addToSelection(tag) {
-        this.selected.add(tag)
+
+
+    displaySelection(tag) {
         const el = document.createElement("span");
         el.classList.add("tag-ustensil");
+        el.dataset.value = tag;
         el.innerHTML = tag + '<span class="delete-tag">x</span>';
         document.querySelector(".tags").appendChild(el);
-        el.querySelector(".delete-tag").addEventListener("click", () => {
+    }
+
+    listerForUnselect (tag) {
+        const tagEl = document.querySelector(`.tag-ustensil[data-value="${tag}"]`)
+        tagEl.querySelector('.delete-tag').addEventListener("click", (e) => {
             this.selected.delete(tag);
-            el.remove();
-            this.filter();
+            tagEl.remove();
+            const filteredRecipes = this.filter(this.list.all);
+            this.list.display(filteredRecipes)
           });
-        }
+    }
 
     // Tri des recettes
-    filter() {
-        // const filteredRecipes = this.recipes.filter(recipe => {
+    filter(recipes) {
+        // const filteredRecipes = this.list.filter(recipe => {
         //     return recipe.ustensils.some(ustensil => this.selected.has(ustensil.toLowerCase()));
         //   });
         //   displayData(filteredRecipes);
@@ -73,7 +74,7 @@ class UstensilsFilter {
         const list = []
         console.log(list)
 
-        this.recipes.forEach(recipe => {
+        recipes.forEach(recipe => {
             let count = 0
             recipe.ustensils.forEach(ustensil =>
                 {
@@ -101,16 +102,10 @@ class UstensilsFilter {
         const filteredRecipes = this.filter();
         this.display(filteredRecipes);
     }
-      
-    filterDropdown(recipes) {
-        this.recipes = recipes;
-        this.filteredUstensils = this.collect(recipes);
-        this.display(this.filteredUstensils);
-    }
-    
+        
 
     // Afficher le dropdown
-    showDropdown() {
+    ListenForShowDropdown() {
         document.querySelector("#ustensils-filter-button").addEventListener("click", () => {
             document.querySelector("#ustensils-dropdown").style.display = 'block';
             document.querySelector("#ustensils-filter-button").style.display = 'none';
@@ -118,7 +113,7 @@ class UstensilsFilter {
     }
 
     // Fermer le dropdown
-    hideDropdown() {
+    ListenForHideDropdown() {
         document.querySelector("#arrow-ustensils").addEventListener("click", () => {
             document.querySelector("#ustensils-filter-button").style.display = 'block';
             document.querySelector("#ustensils-dropdown").style.display = 'none';
@@ -126,7 +121,7 @@ class UstensilsFilter {
     }
 
     // barre de recherche du dropdown
-    searchFilter() {
+    listenForInputFilter() {
         const searchBar = document.querySelector("#searchbar-ustensils");
         searchBar.addEventListener("input", () => {
             let searchTerm = searchBar.value.toLowerCase();
