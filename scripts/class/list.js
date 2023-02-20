@@ -15,6 +15,7 @@ export default class List {
         filter.listenForInputFilter()
         filter.listenForSelection()
     }
+    
     display(recipes) {
         const recipesSection = document.querySelector('.cards')
         recipesSection.innerHTML = '';
@@ -28,4 +29,12 @@ export default class List {
         });
     }
 
+    filterRecipes() {
+        let filteredRecipes = this.all;
+        this.filter.forEach((filter) => {
+            filteredRecipes = filter.filter(filteredRecipes);
+        });
+        return filteredRecipes;
+    }
+    
 }

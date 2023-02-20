@@ -1,21 +1,21 @@
-class UstensilsFilter {
+class IngredientsFilter {
     constructor(list) {
       this.list = list;
       this.all = new Set();
       this.selected = new Set();
-      this.type = 'ustensils'
+      this.type = 'ingredients'
     }
-  
-    // Récupération de la liste des ustensils.
+    
+    // Récupération de la liste des ingredients.
     collect() {
-      this.list.all.forEach(recipe => {
-        recipe.ustensils.forEach(ustensil => {
-          this.all.add(ustensil.charAt(0).toUpperCase() + ustensil.slice(1));
+        this.list.all.forEach(recipe => {
+          recipe.ingredients.forEach(ingredient => {
+            this.all.add(ingredient.ingredient.charAt(0).toUpperCase() + ingredient.ingredient.slice(1));
+          });
         });
-      });
-    }
+      }
 
-    // Création des "li" pour les ustensils.
+    // Création des "li" pour les ingredients.
     display() {
         const list = document.querySelector(`#${this.type}-dropdown-content`);
         list.innerHTML = "";
@@ -82,9 +82,9 @@ class UstensilsFilter {
 
         recipes.forEach(recipe => {
             let count = 0
-            recipe.ustensils.forEach(ustensil =>
+            recipe.ingredients.forEach(ingredient =>
                 {
-                    if (this.selected.has(ustensil.toLowerCase()))
+                    if (this.selected.has(ingredient.ingredient.toLowerCase()))
                     {
                         count++
                     }
@@ -102,7 +102,7 @@ class UstensilsFilter {
     filterByResults(data) {
         let searchResults = data;
         let filtered = new Set();
-        searchResults.forEach(recipe => recipe.ustensils.forEach(ustensil => filtered.add(ustensil)));
+        searchResults.forEach(recipe => recipe.ingredients.forEach(ingredient => filtered.add(ingredient.ingredient)));
         this.all = filtered;
         this.display(Array.from(filtered));
         const filteredRecipes = this.filter();
@@ -126,25 +126,26 @@ class UstensilsFilter {
         });
     }
 
+    
     // barre de recherche du dropdown
     listenForInputFilter() {
         const searchBar = document.querySelector(`#searchbar-${this.type}`);
-    
+
         searchBar.addEventListener("input", () => {
             const searchTerm = searchBar.value.trim().toLowerCase();
             let filtered = new Set();
-    
+
             this.list.all.forEach((recipe) => {
-                recipe.ustensils.forEach((ustensil) => {
-                    if (ustensil.toLowerCase().includes(searchTerm)) {
-                        filtered.add(ustensil);
+                recipe.ingredients.forEach((ingredient) => {
+                    if (ingredient.ingredient.toLowerCase().includes(searchTerm)) {
+                        filtered.add(ingredient.ingredient);
                     }
                 });
             });
-    
+
             this.all = filtered;
             this.display(Array.from(filtered));
-    
+
             const filteredRecipes = this.list.filterRecipes();
             this.list.display(filteredRecipes);
         });
@@ -153,4 +154,4 @@ class UstensilsFilter {
 
 }
 
-export default UstensilsFilter
+export default IngredientsFilter

@@ -1,21 +1,22 @@
-class UstensilsFilter {
+class AppareilsFilter {
     constructor(list) {
       this.list = list;
       this.all = new Set();
       this.selected = new Set();
-      this.type = 'ustensils'
+      this.type = 'appliances'
+      
     }
   
-    // Récupération de la liste des ustensils.
+    // Récupération de la liste des appliance.
     collect() {
       this.list.all.forEach(recipe => {
-        recipe.ustensils.forEach(ustensil => {
-          this.all.add(ustensil.charAt(0).toUpperCase() + ustensil.slice(1));
+        recipe.appliance.split(',').forEach(appliance => {
+          this.all.add(appliance.charAt(0).toUpperCase() + appliance.slice(1));
         });
       });
     }
 
-    // Création des "li" pour les ustensils.
+    // Création des "li" pour les appliance.
     display() {
         const list = document.querySelector(`#${this.type}-dropdown-content`);
         list.innerHTML = "";
@@ -23,17 +24,7 @@ class UstensilsFilter {
             const li = document.createElement("li");
             li.innerHTML = item;
             list.appendChild(li);
-            li.classList.add('item');
-            li.addEventListener("click", (e) => {
-                const tag = e.target.innerText.toLowerCase();
-
-                this.selected.add(tag);
-                this.displaySelection(tag);
-                // Filtrage des recettes avec le nouveau tag
-                const filteredRecipes = this.list.filterRecipes();
-                this.list.display(filteredRecipes);
-                this.listerForUnselect(tag);
-            });
+            li.classList.add('item')
         });
     }
 
@@ -76,33 +67,30 @@ class UstensilsFilter {
 
     // Tri des recettes
     filter(recipes) {
-        
-        const list = []
-        console.log(list)
-
+        const list = [];
+      
         recipes.forEach(recipe => {
-            let count = 0
-            recipe.ustensils.forEach(ustensil =>
-                {
-                    if (this.selected.has(ustensil.toLowerCase()))
-                    {
-                        count++
-                    }
-                })
-                if (count === this.selected.size) 
-                {
-                    list.push(recipe)
-                }
-        })
-        return list
-    }
+          let count = 0;
+          const appliances = recipe.appliance.split(','); 
+          appliances.forEach(appliance => {
+            if (this.selected.has(appliance.toLowerCase())) {
+              count++;
+            }
+          });
+          if (count === this.selected.size) {
+            list.push(recipe);
+          }
+        });
+      
+        return list;
+      }
     
 
     // Tri de la barre de recherche principale
     filterByResults(data) {
         let searchResults = data;
         let filtered = new Set();
-        searchResults.forEach(recipe => recipe.ustensils.forEach(ustensil => filtered.add(ustensil)));
+        searchResults.forEach(recipe => recipe.appliance.split(',').forEach(appliance => filtered.add(appliance)));
         this.all = filtered;
         this.display(Array.from(filtered));
         const filteredRecipes = this.filter();
@@ -128,29 +116,29 @@ class UstensilsFilter {
 
     // barre de recherche du dropdown
     listenForInputFilter() {
-        const searchBar = document.querySelector(`#searchbar-${this.type}`);
-    
-        searchBar.addEventListener("input", () => {
-            const searchTerm = searchBar.value.trim().toLowerCase();
-            let filtered = new Set();
-    
-            this.list.all.forEach((recipe) => {
-                recipe.ustensils.forEach((ustensil) => {
-                    if (ustensil.toLowerCase().includes(searchTerm)) {
-                        filtered.add(ustensil);
-                    }
-                });
-            });
-    
-            this.all = filtered;
-            this.display(Array.from(filtered));
-    
-            const filteredRecipes = this.list.filterRecipes();
-            this.list.display(filteredRecipes);
-        });
-    }
+      const searchBar = document.querySelector(`#searchbar-${this.type}`);
+  
+      searchBar.addEventListener("input", () => {
+          const searchTerm = searchBar.value.trim().toLowerCase();
+          let filtered = new Set();
+  
+          this.list.all.forEach((recipe) => {
+            recipe.appliance.split(',').forEach((appliance) => {
+                  if (appliance.toLowerCase().includes(searchTerm)) {
+                      filtered.add(appliance);
+                  }
+              });
+          });
+  
+          this.all = filtered;
+          this.display(Array.from(filtered));
+  
+          const filteredRecipes = this.list.filterRecipes();
+          this.list.display(filteredRecipes);
+      });
+  }
     
 
 }
 
-export default UstensilsFilter
+export default AppareilsFilter

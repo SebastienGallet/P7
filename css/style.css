@@ -112,10 +112,18 @@ header img{
     font-weight: bold;
 }
 
-.filter .filter-button{
+.filter{
+    display: flex;
+}
+
+.filterblock{
+    margin-right: 20px;
+}
+
+.filter #ustensils-filter-button{
     width: 170px;
     height: 69px;
-    background: #68D9A4;
+    background: #ED6454;
     color: white;
     font-size: 18px;
     border-radius: 5px;
@@ -128,8 +136,8 @@ header img{
 
 #ustensils-dropdown{
     display: none;
-    background: #68D9A4;
-    width: 50%;
+    background: #ED6454;
+    width: 667px;
     border-radius: 5px;
 }
 
@@ -153,9 +161,9 @@ header img{
     opacity: 0.5;
 }
 
-.searchbar-arrow {
+#arrow-ustensils {
     transform: rotate(180deg);
-    background: #68D9A4;
+    background: #ED6454;
     border: none;
     padding: 30px;
 }
@@ -164,7 +172,9 @@ header img{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    max-height: 85% ;
+    max-height: 85%;
+    height: 1500px;
+    overflow: auto;
 }
 
 
@@ -175,14 +185,76 @@ header img{
     padding: 5px;
     height: 28px;
     border-radius: 5px;
+    padding: 0;
 }
 
-.dropdown-content li:hover {
+#ustensils-dropdown-content li:hover {
+    color: #ED6454;
+    background: white;
+}
+
+.tag-ustensils {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+    height: 37px;
+    font-size: 14px;
+    color: white;
+    background: #ED6454;
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 15px 0;
+}
+
+#ingredients-dropdown-content li:hover {
+    color: #3282F7;
+    background: white;
+}
+
+.tag-ingredients {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+    height: 37px;
+    font-size: 14px;
+    color: white;
+    background: #3282F7;
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 15px 0;
+}
+
+#ingredients-dropdown{
+    display: none;
+    background: #3282F7;
+    width: 667px;
+    border-radius: 5px;
+}
+
+.filter #ingredients-filter-button{
+    width: 170px;
+    height: 69px;
+    background: #3282F7;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#arrow-ingredients {
+    transform: rotate(180deg);
+    background-color: #3282F7;
+    border: none;
+    padding: 30px;
+}
+
+#appliances-dropdown-content li:hover {
     color: #68D9A4;
     background: white;
 }
 
-.tag-ustensil {
+.tag-appliances {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -195,6 +267,30 @@ header img{
     padding: 0 10px;
     margin: 15px 0;
 }
+
+#appliances-dropdown{
+    display: none;
+    background: #68D9A4;
+    width: 667px;
+    border-radius: 5px;
+}
+
+.filter #appliances-filter-button{
+    width: 170px;
+    height: 69px;
+    background: #68D9A4;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#arrow-appliances {
+    transform: rotate(180deg);
+    background-color: #68D9A4;
+    border: none;
+    padding: 30px;
+}
+
 .delete-tag{
     cursor: pointer;
     
