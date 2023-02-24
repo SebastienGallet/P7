@@ -3,12 +3,13 @@ import cardsFactory from "../factory/cards.js";
 export default class List {
     constructor(recipes) {
         this.all = recipes
-        this.filter = []
+        this.filters = []
     }
 
     addFilter (filter){
-        this.filter.push(filter);
-        filter.collect()
+        this.filters.push(filter);
+        filter.collect(this.all)
+        filter.all = filter.filtered
         filter.display()
         filter.ListenForShowDropdown()
         filter.ListenForHideDropdown()
@@ -31,7 +32,7 @@ export default class List {
 
     filterRecipes() {
         let filteredRecipes = this.all;
-        this.filter.forEach((filter) => {
+        this.filters.forEach((filter) => {
             filteredRecipes = filter.filter(filteredRecipes);
         });
         return filteredRecipes;

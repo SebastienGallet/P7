@@ -22,10 +22,11 @@ list.addFilter(filterUstensil)
 
 
 document.querySelector("#searchbar").addEventListener("input", function() {
-    let searchTerm = document.querySelector("#searchbar").value.toLowerCase();
-    if(searchTerm.length >= 3) {
-        let searchResults = list.all.filter(recipe => recipe.name.toLowerCase().includes(searchTerm) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchTerm)) || recipe.description.toLowerCase().includes(searchTerm));
-        displayData(searchResults);
-        filter.filterByResults(searchResults);
-    }
-});
+    const searchTerm = this.value.toLowerCase();
+    const filteredRecipes = list.all.filter((recipe) => {
+      return recipe.name.toLowerCase().includes(searchTerm) ||
+             recipe.description.toLowerCase().includes(searchTerm);
+    });
+    list.display(filteredRecipes);
+  });
+  
