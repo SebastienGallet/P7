@@ -22,11 +22,10 @@ list.addFilter(filterUstensil)
 
 
 document.querySelector("#searchbar").addEventListener("input", function() {
-    const searchTerm = this.value.toLowerCase();
-    const filteredRecipes = list.all.filter((recipe) => {
-      return recipe.name.toLowerCase().includes(searchTerm) ||
-             recipe.description.toLowerCase().includes(searchTerm);
-    });
-    list.display(filteredRecipes);
+  const searchTerm = this.value.toLowerCase();
+  const filteredRecipes = list.filterRecipes().filter((recipe) => {
+    return recipe.name.toLowerCase().includes(searchTerm) ||
+           recipe.description.toLowerCase().includes(searchTerm);
   });
-  
+  list.display(filteredRecipes);
+});
