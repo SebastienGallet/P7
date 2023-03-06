@@ -36,39 +36,6 @@ class AppareilsFilter extends Filter {
         return list;
       }
 
-    // barre de recherche du dropdown
-    listenForInputFilter() {
-      const searchBar = document.querySelector(`#searchbar-${this.type}`);
-  
-      searchBar.addEventListener("input", () => {
-          const searchTerm = searchBar.value.trim().toLowerCase();
-          let filtered = new Set();
-  
-          this.list.all.forEach((recipe) => {
-            recipe.appliance.split(',').forEach((appliance) => {
-                  if (appliance.toLowerCase().includes(searchTerm)) {
-                      filtered.add(appliance);
-                  }
-              });
-          });
-  
-          // Mettre à jour la liste filtered avec les ustensiles filtrés
-          this.filtered = filtered;
-    
-          this.filtered = filtered;
-          this.display(Array.from(filtered));
-
-          // ajout du gestionnaire d'événements click pour chaque élément de la liste des résultats de la recherche
-          document.querySelectorAll(`#${this.type}-dropdown-content .item`).forEach((item) => {
-            item.addEventListener("click", () => {
-                const tag = item.innerText.toLowerCase();
-            });
-          });
-          this.listenForSelection()
-          const filteredRecipes = this.list.filterRecipes();
-          this.list.display(filteredRecipes);
-      });
-  }
 }
 
 export default AppareilsFilter

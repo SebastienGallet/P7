@@ -16,12 +16,13 @@ class Filter {
           const li = document.createElement("li");
           li.innerHTML = item.charAt(0).toUpperCase() + item.slice(1);
           li.classList.add('item');
+          li.dataset.id=item.toLowerCase()
           li.addEventListener('click', (e) => {
             const tag = e.target.innerText.toLowerCase();
             if (this.selected.has(tag)) {
-              e.target.style.cursor = 'not-allowed';
-              e.target.style.opacity = '0.50';
-              return;
+                e.target.style.cursor = 'not-allowed';
+                e.target.style.opacity = '0.50';
+                return;
             }
             this.selected.add(tag)
             this.displaySelection(tag)
@@ -30,7 +31,6 @@ class Filter {
             this.listerForUnselect(tag)
             this.collect(filteredRecipes);
             this.display(this.filtered)
-            this.updateOtherFilters(filteredRecipes);
             this.listenForSelection()
           });
           list.appendChild(li);
@@ -82,7 +82,6 @@ class Filter {
         this.list.display(filteredRecipes)
         this.collect(filteredRecipes)
         this.display(this.filtered)
-        this.updateOtherFilters(filteredRecipes);
         this.listenForSelection()
     }
     
@@ -127,30 +126,30 @@ class Filter {
         });
     }
 
-    updateOtherFilters(filteredRecipes) {
-        const ingredientsFilter = this.list.filters.find(filter => filter.type === 'ingredients');
-        const appliancesFilter = this.list.filters.find(filter => filter.type === 'appliances');
-        const ustensilsFilter = this.list.filters.find(filter => filter.type === 'ustensils');
-    
-        ingredientsFilter.collect(filteredRecipes);
-        appliancesFilter.collect(filteredRecipes);
-        ustensilsFilter.collect(filteredRecipes);
-    
-        ingredientsFilter.all = ingredientsFilter.filtered;
-        appliancesFilter.all = appliancesFilter.filtered;
-        ustensilsFilter.all = ustensilsFilter.filtered;
-    
-        ingredientsFilter.display();
-        appliancesFilter.display();
-        ustensilsFilter.display();
-        
+
+    // barre de recherche du dropdown
+    listenForInputFilter() {
+        const searchBar = document.querySelector(`#searchbar-${this.type}`);
+
+        searchBar.addEventListener("input", () => {
+            const list = new Set()
+            const tagEls = document.querySelectorAll(`#${this.type}-dropdown-content li.item`)
+            tagEls.forEach(el => {
+                el.classList.remove('hidden')
+            })
+            const searchTerm = searchBar.value.trim().toLowerCase();
+            this.all.forEach(tag => 
+                {
+                    if (tag.toLowerCase().indexOf(searchTerm) === -1) {
+                        const el = document.querySelector(`#${this.type}-dropdown-content li.item[data-id="${tag}"]`)
+                        if (! el.classList.contains('hidden')){
+                            el.classList.add('hidden')
+                        }
+                        
+                    }
+                })
+        });
     }
-
-
-
-
-    
-
 }
 
 export default Filter

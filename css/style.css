@@ -226,6 +226,10 @@ header img{
     margin: 15px 0;
 }
 
+.hidden{
+    display: none;
+}
+
 #ingredients-dropdown{
     display: none;
     background: #3282F7;
