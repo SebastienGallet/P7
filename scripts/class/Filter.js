@@ -17,23 +17,8 @@ class Filter {
           li.innerHTML = item.charAt(0).toUpperCase() + item.slice(1);
           li.classList.add('item');
           li.dataset.id=item.toLowerCase()
-          li.addEventListener('click', (e) => {
-            const tag = e.target.innerText.toLowerCase();
-            if (this.selected.has(tag)) {
-                e.target.style.cursor = 'not-allowed';
-                e.target.style.opacity = '0.50';
-                return;
-            }
-            this.selected.add(tag)
-            this.displaySelection(tag)
-            const filteredRecipes = this.list.filterRecipes();
-            this.list.display(filteredRecipes)
-            this.listerForUnselect(tag)
-            this.collect(filteredRecipes);
-            this.display(this.filtered)
-            this.listenForSelection()
-          });
           list.appendChild(li);
+          this.listenForSelection()
         });
       }
       
@@ -54,14 +39,8 @@ class Filter {
 
                 this.selected.add(tag)
                 this.displaySelection(tag)
-                // Filtrage des recettes avec le nouveau tag
-                const filteredRecipes = this.list.filterRecipes();
-                this.list.display(filteredRecipes)
+                this.list.filter();
                 this.listerForUnselect(tag)
-                this.collect(filteredRecipes);
-                this.display(this.filtered)
-                this.updateOtherFilters(filteredRecipes);
-                this.listenForSelection()
             })
         })
     }
@@ -91,10 +70,7 @@ class Filter {
         tagEl.querySelector('.delete-tag').addEventListener("click", (e) => {
             this.selected.delete(tag);
             this.removeSelection(tag)
-            const filteredRecipes = this.list.filterRecipes();
-            this.list.display(filteredRecipes)
-            this.collect(filteredRecipes)
-            this.listenForSelection()
+            this.list.filter();
           });
     }
 
