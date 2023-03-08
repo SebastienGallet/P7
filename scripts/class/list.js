@@ -30,7 +30,7 @@ export default class List {
         });
     }
 
-    filter() {
+    filter (){
         // Filtrage des recettes avec le nouveau tag
         const filteredRecipes = this.filterRecipes();
         this.display(filteredRecipes)

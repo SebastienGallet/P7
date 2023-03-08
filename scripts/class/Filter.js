@@ -17,8 +17,8 @@ class Filter {
           li.innerHTML = item.charAt(0).toUpperCase() + item.slice(1);
           li.classList.add('item');
           li.dataset.id=item.toLowerCase()
-          list.appendChild(li);
           this.listenForSelection()
+          list.appendChild(li);
         });
       }
       
@@ -39,8 +39,8 @@ class Filter {
 
                 this.selected.add(tag)
                 this.displaySelection(tag)
-                this.list.filter();
-                this.listerForUnselect(tag)
+                this.list.filter()
+                this.listenForUnselect(tag)
             })
         })
     }
@@ -65,12 +65,12 @@ class Filter {
     }
     
 
-    listerForUnselect (tag) {
+    listenForUnselect (tag) {
         const tagEl = document.querySelector(`.tag-${this.type}[data-value="${tag}"]`)
         tagEl.querySelector('.delete-tag').addEventListener("click", (e) => {
             this.selected.delete(tag);
             this.removeSelection(tag)
-            this.list.filter();
+            this.list.filter()
           });
     }
 
