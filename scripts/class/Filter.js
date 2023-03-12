@@ -50,7 +50,7 @@ class Filter {
         const el = document.createElement("span");
         el.classList.add(`tag-${this.type}`);
         el.dataset.value = tag;
-        el.innerHTML = tag.charAt(0).toUpperCase() + tag.slice(1) + '<span class="delete-tag">x</span>';
+        el.innerHTML = tag.charAt(0).toUpperCase() + tag.slice(1) + '<img src="./../../assets/vector.svg" alt="close" class="delete-tag">';
         document.querySelector(".tags").appendChild(el);
     }
 
@@ -84,6 +84,7 @@ class Filter {
         const filteredRecipes = this.filter();
         this.display(filteredRecipes);
     }
+
         
 
     // Afficher le dropdown
@@ -105,6 +106,7 @@ class Filter {
 
     // barre de recherche du dropdown
     listenForInputFilter() {
+        
         const searchBar = document.querySelector(`#searchbar-${this.type}`);
 
         searchBar.addEventListener("input", () => {
@@ -126,6 +128,13 @@ class Filter {
                 })
         });
     }
+
+    updateDropdown(filtered) {
+        this.filtered = filtered;
+        this.display();
+        this.listenForSelection();
+    }
+    
 }
 
 export default Filter

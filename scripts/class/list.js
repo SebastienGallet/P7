@@ -16,10 +16,16 @@ export default class List {
         filter.listenForInputFilter()
         filter.listenForSelection()
     }
-    
+
     display(recipes) {
         const recipesSection = document.querySelector('.cards')
         recipesSection.innerHTML = '';
+        if (recipes.length === 0) {
+            recipesSection.innerHTML = `<p>Aucune recette ne correspond à votre critère… vous pouvez
+            chercher « tarte aux pommes », « poisson », etc.
+            </p>`;
+            return;
+        }
         recipes.forEach((recipe) => {
             const recipeModel = cardsFactory(recipe)
             const recipeCardDOM = recipeModel.getCardDOM()
@@ -30,16 +36,24 @@ export default class List {
         });
     }
 
-    filter (){
-        // Filtrage des recettes avec le nouveau tag
+    filter () {
+        // Filtrer les recettes avec le nouveau tag
         const filteredRecipes = this.filterRecipes();
-        this.display(filteredRecipes)
+
+        // Mettre à jour les dropdowns de filtres
         this.filters.forEach((filter) => {
             filter.collect(filteredRecipes);
-            filter.display(filter.filtered)
-            filter.listenForSelection()
+            filter.all = filter.filtered;
+            filter.display(filter.filtered);
+            filter.listenForSelection();
         });
+
+        // Filtrer les recettes avec le nouveau terme de recherche
+        const searchTerm = document.querySelector("#searchbar").value.toLowerCase();
+        let searchedRecipes = this.search(filteredRecipes, searchTerm);
+        this.display(searchedRecipes);
     }
+
 
     filterRecipes() {
         let filteredRecipes = this.all;
@@ -48,16 +62,34 @@ export default class List {
         });
         return filteredRecipes;
     }
-    
+
     listen() {
         document.querySelector("#searchbar").addEventListener("input", () => {
-            const searchTerm = document.querySelector("#searchbar").value.toLowerCase();
-            let filteredRecipes = this.filterRecipes();
-            filteredRecipes = this.search(filteredRecipes, searchTerm);
-            this.display(filteredRecipes);
+          // Filtrer les recettes avec le nouveau terme de recherche
+          const searchTerm = document.querySelector("#searchbar").value.toLowerCase();
+          let searchedRecipes;
+          if (searchTerm.length >= 3) {
+            searchedRecipes = this.filterRecipes();
+            searchedRecipes = this.search(searchedRecipes, searchTerm);
+            this.display(searchedRecipes);
+          } else if (searchTerm.length < 3) {
+            // Afficher toutes les recettes si la barre de recherche est vide
+            searchedRecipes = this.filterRecipes();
+            this.display(searchedRecipes);
+          }
+          // Mettre à jour les dropdowns de filtres
+          this.updateFilters(searchedRecipes);
         });
-        
-    }
+      }
+
+      updateFilters(recipes) {
+        this.filters.forEach((filter) => {
+          filter.collect(recipes);
+          filter.all = filter.filtered;
+          filter.display(filter.filtered);
+          filter.listenForSelection();
+        });
+      }
 
     search(recipes, needle) {
         return recipes.filter((recipe) => {
@@ -67,7 +99,7 @@ export default class List {
                         return ingredient.ingredient.toLowerCase().includes(needle);
                    })
         })
-    }
+    }  
 
 
     // search(recipes, needle) {

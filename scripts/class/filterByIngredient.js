@@ -6,7 +6,6 @@ class IngredientsFilter extends Filter {
     }
     
     // Récupération de la liste des ingredients.
-    // Récupération de la liste des ingredients.
     collect(recipes) {
         this.filtered = new Set();
         recipes.forEach(recipe => {
@@ -21,7 +20,6 @@ class IngredientsFilter extends Filter {
     filter(recipes) {
         
         const list = []
-        console.log(list)
 
         recipes.forEach(recipe => {
             let count = 0

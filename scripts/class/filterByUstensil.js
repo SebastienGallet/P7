@@ -20,7 +20,6 @@ class UstensilsFilter extends Filter {
     filter(recipes) {
         
         const list = []
-        console.log(list)
 
         recipes.forEach(recipe => {
             let count = 0
