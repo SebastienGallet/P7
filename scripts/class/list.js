@@ -91,33 +91,33 @@ export default class List {
     });
   }
 
-  search(recipes, needle) {
-    return recipes.filter((recipe) => {
-      return recipe.name.toLowerCase().includes(needle) ||
-        recipe.description.toLowerCase().includes(needle) ||
-        recipe.ingredients.some((ingredient) => {
-            return ingredient.ingredient.toLowerCase().includes(needle);
-        })
-    })
-  }  
-
-
   // search(recipes, needle) {
-  //     const result = [];
-  //     for (let i = 0; i < recipes.length; i++) {
-  //         if (recipes[i].name.toLowerCase().includes(needle) ||
-  //             recipes[i].description.toLowerCase().includes(needle)) {
-  //             result.push(recipes[i]);
-  //             continue;
-  //         }
-  //         for (let j = 0; j < recipes[i].ingredients.length; j++) {
-  //             if (recipes[i].ingredients[j].ingredient.toLowerCase().includes(needle)) {
-  //                 result.push(recipes[i]);
-  //                 break;
-  //             }
-  //         }
-  //     }
-  //     return result;
-  // }
+  //   return recipes.filter((recipe) => {
+  //     return recipe.name.toLowerCase().includes(needle) ||
+  //       recipe.description.toLowerCase().includes(needle) ||
+  //       recipe.ingredients.some((ingredient) => {
+  //           return ingredient.ingredient.toLowerCase().includes(needle);
+  //       })
+  //   })
+  // }  
+
+
+  search(recipes, needle) {
+      const result = [];
+      for (let i = 0; i < recipes.length; i++) {
+          if (recipes[i].name.toLowerCase().includes(needle) ||
+              recipes[i].description.toLowerCase().includes(needle)) {
+              result.push(recipes[i]);
+              continue;
+          }
+          for (let j = 0; j < recipes[i].ingredients.length; j++) {
+              if (recipes[i].ingredients[j].ingredient.toLowerCase().includes(needle)) {
+                  result.push(recipes[i]);
+                  break;
+              }
+          }
+      }
+      return result;
+  }
     
 }
