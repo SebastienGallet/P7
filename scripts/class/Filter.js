@@ -116,25 +116,18 @@ class Filter {
                 el.classList.remove('hidden')
             })
             const searchTerm = searchBar.value.trim().toLowerCase();
-            this.all.forEach(tag => 
-                {
-                    if (tag.toLowerCase().indexOf(searchTerm) === -1) {
-                        const el = document.querySelector(`#${this.type}-dropdown-content li.item[data-id="${tag}"]`)
-                        if (! el.classList.contains('hidden')){
-                            el.classList.add('hidden')
-                        }
-                        
+            this.all.forEach(tag => {
+                if (tag.toLowerCase().indexOf(searchTerm) === -1) {
+                    const el = document.querySelector(`#${this.type}-dropdown-content li.item[data-id="${tag}"]`)
+                    if (! el.classList.contains('hidden')){
+                        el.classList.add('hidden')
                     }
-                })
+                    
+                }
+            })
         });
     }
 
-    updateDropdown(filtered) {
-        this.filtered = filtered;
-        this.display();
-        this.listenForSelection();
-    }
-    
 }
 
 export default Filter
