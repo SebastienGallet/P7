@@ -297,5 +297,10 @@ header img{
 
 .delete-tag{
     cursor: pointer;
-    
+}
+
+.caracteres{
+    display: none;
+    margin-bottom: 17px;
+    color: red;
 }

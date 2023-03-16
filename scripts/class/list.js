@@ -67,15 +67,18 @@ export default class List {
     document.querySelector("#searchbar").addEventListener("input", () => {
       // Filtrer les recettes avec le nouveau terme de recherche
       const searchTerm = document.querySelector("#searchbar").value.toLowerCase();
+      const caracteres = document.querySelector('.caracteres');
       let searchedRecipes;
       if (searchTerm.length >= 3) {
         searchedRecipes = this.filterRecipes();
         searchedRecipes = this.search(searchedRecipes, searchTerm);
         this.display(searchedRecipes);
+        caracteres.style.display = 'none'
       } else if (searchTerm.length < 3) {
         // Afficher toutes les recettes si la barre de recherche est vide
         searchedRecipes = this.filterRecipes();
         this.display(searchedRecipes);
+        caracteres.style.display = 'block'
       }
       // Mettre à jour les dropdowns de filtres
       this.updateFilters(searchedRecipes);
@@ -119,5 +122,4 @@ export default class List {
   //     }
   //     return result;
   // }
-    
 }
